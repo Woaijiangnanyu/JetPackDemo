@@ -2,6 +2,7 @@ package com.guojl.jetpack
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.guojl.jetpack.observer.MainObserver
 import com.guojl.jetpack.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -14,5 +15,8 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+        val mainObserver = MainObserver()
+        var application = application as MainApplication
+        application.appLifecycleOwner!!.lifecycleRegistry!!.addObserver(mainObserver)
     }
 }
