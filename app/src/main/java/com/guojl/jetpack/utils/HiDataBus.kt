@@ -69,15 +69,18 @@ object HiDataBus {
         // sticky 不等于true ，只能接收到注册之后的消息发送，如果要收到黏性事件，则sticky需要传true
         private var lastVersion = stickyLiveData.mVersion
         override fun onChanged(t: T) {
-            if (lastVersion >= stickyLiveData.mVersion) {
-                // stickyLiveData 没有更新数据
-                if (sticky && stickyLiveData.mStickyData != null) {
-                    observer.onChanged(stickyLiveData.mStickyData)
+            try {
+                if (lastVersion >= stickyLiveData.mVersion) {
+                    // stickyLiveData 没有更新数据
+                    if (sticky && stickyLiveData.mStickyData != null) {
+                        observer.onChanged(stickyLiveData.mStickyData)
+                    }
+                    return
                 }
-                return
+                lastVersion = stickyLiveData.mVersion
+                observer.onChanged(t)
+            } catch (e: ClassCastException) {
             }
-            lastVersion = stickyLiveData.mVersion
-            observer.onChanged(t)
         }
 
     }

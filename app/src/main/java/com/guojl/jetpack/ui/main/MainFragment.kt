@@ -34,17 +34,20 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.message).setOnClickListener {
             activity?.let {
-                viewModel.getCurrentName()?.postValue("hahaha")
+                HiDataBus.with<String>("haha").observe(it, Observer { it -> it?.let { Log.i("aaa", it ) } })
+                SecondActivity.startSecondActivity(it)
+////                viewModel.getCurrentName()?.postValue("hahaha")
             }
+//            var clazz = GenericsUtils.getSuperClassGenricType(HiDataBus.with<Boolean>("haha").javaClass);
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getCurrentName()?.observe(this,
-            Observer<String> { t -> t?.let{Log.i("aaa",t)}
-            })
+//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+//        viewModel.getCurrentName()?.observe(this,
+//            Observer<String> { t -> t?.let{Log.i("aaa",t)}
+//            })
     }
 
 }
